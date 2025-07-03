@@ -1,0 +1,30 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Allow authenticated users to read and write their own documents
+    match /documents/{userId}/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Allow authenticated users to read certificates
+    match /certificates/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (request.auth.token.isAdmin == true || 
+         request.auth.token.isCertificateAuthority == true);
+    }
+    
+    // Allow authenticated users to read/write avatars
+    match /avatars/{userId}/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Development fallback - remove in production
+    match /{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+} 

@@ -1,0 +1,29 @@
+[
+  {
+    "origin": ["http://localhost:*", "https://localhost:*", "http://127.0.0.1:*", "https://127.0.0.1:*", "https://mobile-project-63d46.firebaseapp.com", "https://mobile-project-63d46.web.app"],
+    "method": ["GET", "HEAD", "PUT", "POST", "DELETE", "OPTIONS"],
+    "maxAgeSeconds": 3600,
+    "responseHeader": [
+      "Content-Type",
+      "Content-Length",
+      "Content-Encoding",
+      "Content-Range",
+      "Access-Control-Allow-Origin",
+      "Access-Control-Allow-Headers",
+      "Access-Control-Allow-Methods",
+      "Access-Control-Max-Age",
+      "Access-Control-Allow-Credentials",
+      "X-Firebase-Storage-Version",
+      "X-Goog-Upload-Protocol",
+      "X-Goog-Upload-Status",
+      "X-Goog-Upload-Header-Content-Length",
+      "X-Goog-Upload-Header-Content-Type",
+      "X-Goog-Upload-Offset",
+      "X-Goog-Upload-Chunk-Granularity",
+      "X-Goog-Upload-Size-Received",
+      "Authorization",
+      "Origin",
+      "Referer"
+    ]
+  }
+] 
