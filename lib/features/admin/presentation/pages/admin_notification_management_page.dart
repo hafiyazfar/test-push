@@ -12,14 +12,18 @@ class AdminNotificationManagementPage extends ConsumerStatefulWidget {
   const AdminNotificationManagementPage({super.key});
 
   @override
-  ConsumerState<AdminNotificationManagementPage> createState() => _AdminNotificationManagementPageState();
+  ConsumerState<AdminNotificationManagementPage> createState() =>
+      _AdminNotificationManagementPageState();
 }
+//trying test pushing
 
-class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificationManagementPage>
+class _AdminNotificationManagementPageState
+    extends ConsumerState<AdminNotificationManagementPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  final AdminNotificationService _adminNotificationService = AdminNotificationService();
-  
+  final AdminNotificationService _adminNotificationService =
+      AdminNotificationService();
+
   @override
   void initState() {
     super.initState();
@@ -131,13 +135,13 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                   Text(
                     'Send to Individual Users',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ],
               ),
               const SizedBox(height: AppTheme.spacingM),
-              
+
               // User Selection
               Container(
                 decoration: BoxDecoration(
@@ -147,8 +151,8 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                 child: ListTile(
                   leading: const Icon(Icons.people),
                   title: Text(
-                    selectedUserIds.isEmpty 
-                        ? 'Select Recipients' 
+                    selectedUserIds.isEmpty
+                        ? 'Select Recipients'
                         : '${selectedUserIds.length} users selected',
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios),
@@ -160,7 +164,7 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                 ),
               ),
               const SizedBox(height: AppTheme.spacingM),
-              
+
               // Title
               TextField(
                 controller: titleController,
@@ -172,7 +176,7 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                 maxLength: 100,
               ),
               const SizedBox(height: AppTheme.spacingM),
-              
+
               // Message
               TextField(
                 controller: messageController,
@@ -185,7 +189,7 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                 maxLength: 500,
               ),
               const SizedBox(height: AppTheme.spacingM),
-              
+
               // Send Button
               SizedBox(
                 width: double.infinity,
@@ -195,19 +199,22 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                       : () async {
                           setState(() => isLoading = true);
                           try {
-                            final currentUser = ref.read(currentUserProvider).asData?.value;
+                            final currentUser =
+                                ref.read(currentUserProvider).asData?.value;
                             if (currentUser != null) {
-                              await _adminNotificationService.sendCustomNotification(
+                              await _adminNotificationService
+                                  .sendCustomNotification(
                                 adminId: currentUser.id,
                                 targetUserIds: selectedUserIds,
                                 title: titleController.text,
                                 message: messageController.text,
                               );
-                              
+
                               if (mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text('Notification sent to ${selectedUserIds.length} users'),
+                                    content: Text(
+                                        'Notification sent to ${selectedUserIds.length} users'),
                                     backgroundColor: Colors.green,
                                   ),
                                 );
@@ -220,7 +227,8 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                             if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Failed to send notification: $e'),
+                                  content:
+                                      Text('Failed to send notification: $e'),
                                   backgroundColor: Colors.red,
                                 ),
                               );
@@ -265,13 +273,13 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                   Text(
                     'Broadcast Notification',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ],
               ),
               const SizedBox(height: AppTheme.spacingM),
-              
+
               // User Type Selection
               DropdownButtonFormField<UserType?>(
                 value: selectedUserType,
@@ -286,14 +294,14 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                     child: Text('All Users'),
                   ),
                   ...UserType.values.map((type) => DropdownMenuItem(
-                    value: type,
-                    child: Text(type.name.toUpperCase()),
-                  )),
+                        value: type,
+                        child: Text(type.name.toUpperCase()),
+                      )),
                 ],
                 onChanged: (value) => setState(() => selectedUserType = value),
               ),
               const SizedBox(height: AppTheme.spacingM),
-              
+
               // Title
               TextField(
                 controller: titleController,
@@ -305,7 +313,7 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                 maxLength: 100,
               ),
               const SizedBox(height: AppTheme.spacingM),
-              
+
               // Message
               TextField(
                 controller: messageController,
@@ -318,7 +326,7 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                 maxLength: 500,
               ),
               const SizedBox(height: AppTheme.spacingM),
-              
+
               // Send Button
               SizedBox(
                 width: double.infinity,
@@ -328,21 +336,22 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                       : () async {
                           setState(() => isLoading = true);
                           try {
-                            final currentUser = ref.read(currentUserProvider).asData?.value;
+                            final currentUser =
+                                ref.read(currentUserProvider).asData?.value;
                             if (currentUser != null) {
-                              await _adminNotificationService.sendBroadcastNotification(
+                              await _adminNotificationService
+                                  .sendBroadcastNotification(
                                 adminId: currentUser.id,
                                 title: titleController.text,
                                 message: messageController.text,
                                 targetUserType: selectedUserType,
                               );
-                              
+
                               if (mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                      'Broadcast sent to ${selectedUserType?.name ?? 'all users'}'
-                                    ),
+                                        'Broadcast sent to ${selectedUserType?.name ?? 'all users'}'),
                                     backgroundColor: Colors.green,
                                   ),
                                 );
@@ -396,8 +405,8 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                 Text(
                   'Scheduled Notifications',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
@@ -454,15 +463,15 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
           itemBuilder: (context, index) {
             final notification = notifications[index];
             final data = notification.data() as Map<String, dynamic>;
-            
+
             return FadeInUp(
               duration: Duration(milliseconds: 200 + (index * 100)),
               child: Card(
                 margin: const EdgeInsets.only(bottom: AppTheme.spacingM),
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: data['isRead'] == true 
-                        ? Colors.grey 
+                    backgroundColor: data['isRead'] == true
+                        ? Colors.grey
                         : AppTheme.primaryColor,
                     child: const Icon(
                       Icons.notifications,
@@ -473,8 +482,8 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                   title: Text(
                     data['title'] ?? 'No Title',
                     style: TextStyle(
-                      fontWeight: data['isRead'] == true 
-                          ? FontWeight.normal 
+                      fontWeight: data['isRead'] == true
+                          ? FontWeight.normal
                           : FontWeight.bold,
                     ),
                   ),
@@ -485,7 +494,8 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                       const SizedBox(height: 4),
                       Text(
                         'Type: ${data['type'] ?? 'unknown'}',
-                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.grey),
                       ),
                     ],
                   ),
@@ -508,7 +518,8 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                           context: context,
                           builder: (context) => AlertDialog(
                             title: const Text('Delete Notification'),
-                            content: const Text('Are you sure you want to delete this notification?'),
+                            content: const Text(
+                                'Are you sure you want to delete this notification?'),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context, false),
@@ -524,13 +535,15 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
 
                         if (confirmed == true) {
                           try {
-                            final currentUser = ref.read(currentUserProvider).asData?.value;
+                            final currentUser =
+                                ref.read(currentUserProvider).asData?.value;
                             if (currentUser != null) {
-                              await _adminNotificationService.deleteNotification(
+                              await _adminNotificationService
+                                  .deleteNotification(
                                 notification.id,
                                 currentUser.id,
                               );
-                              
+
                               if (mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -593,7 +606,8 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.library_books, size: 64, color: Colors.grey),
+                          Icon(Icons.library_books,
+                              size: 64, color: Colors.grey),
                           SizedBox(height: 16),
                           Text('No templates found'),
                           Text('Create your first notification template!'),
@@ -601,18 +615,21 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
                       ),
                     )
                   : ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: AppTheme.spacingM),
                       itemCount: templates.length,
                       itemBuilder: (context, index) {
                         final template = templates[index];
                         return Card(
-                          margin: const EdgeInsets.only(bottom: AppTheme.spacingM),
+                          margin:
+                              const EdgeInsets.only(bottom: AppTheme.spacingM),
                           child: ListTile(
                             leading: const CircleAvatar(
                               child: Icon(Icons.library_books),
                             ),
                             title: Text(template['name'] ?? 'Unnamed Template'),
-                            subtitle: Text(template['category'] ?? 'No Category'),
+                            subtitle:
+                                Text(template['category'] ?? 'No Category'),
                             trailing: PopupMenuButton(
                               itemBuilder: (context) => [
                                 const PopupMenuItem(
@@ -677,7 +694,7 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
               }
 
               final users = snapshot.data!.docs;
-              
+
               return StatefulBuilder(
                 builder: (context, setDialogState) => ListView.builder(
                   itemCount: users.length,
@@ -771,19 +788,21 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
           ),
           ElevatedButton(
             onPressed: () async {
-              if (nameController.text.isNotEmpty && contentController.text.isNotEmpty) {
+              if (nameController.text.isNotEmpty &&
+                  contentController.text.isNotEmpty) {
                 try {
-                                     final currentUser = ref.read(currentUserProvider).asData?.value;
-                   if (currentUser != null) {
-                     await _adminNotificationService.createNotificationTemplate(
-                       adminId: currentUser.id,
-                       name: nameController.text,
-                       title: nameController.text,
-                       message: contentController.text,
-                       category: categoryController.text,
-                     );
-                   }
-                  
+                  final currentUser =
+                      ref.read(currentUserProvider).asData?.value;
+                  if (currentUser != null) {
+                    await _adminNotificationService.createNotificationTemplate(
+                      adminId: currentUser.id,
+                      name: nameController.text,
+                      title: nameController.text,
+                      message: contentController.text,
+                      category: categoryController.text,
+                    );
+                  }
+
                   if (mounted) {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -907,4 +926,4 @@ class _AdminNotificationManagementPageState extends ConsumerState<AdminNotificat
       ),
     );
   }
-} 
+}
